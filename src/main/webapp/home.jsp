@@ -62,7 +62,7 @@
 
                     <c:forEach var="burger" items="${burgers}">
                         <tr>
-                            <td class="text-left"><input type="radio" name="burger" id="burger" value="${burger.toString()}" /></td>
+                            <td class="text-left"><input type="radio" name="burger" id="burger" value="${burger.id}"/></td>
                             <td class="text-left">${burger.nome}</td>
                             <td class="text-left">${burger.mostraIngredientes()}</td>
                             <td class="text-right"><fmt:formatNumber value="${burger.preco}" minFractionDigits="2" type="currency"/></td>
@@ -81,46 +81,69 @@
                         <th class="text-left"></th>
                         <th class="text-left">Ingrediente</th>
                         <th class="text-right">Preço</th>
+                        <th class="text-right">Qtd.</th>
                     </tr>
-                <c:forEach var="ingredientes" items="${ingredientes}" >
-                    <tr>
-                        <td class="text-left"><input type="checkbox" name="ingrediente" value="${ingredientes.id}"></td>
-                        <td class="text-left">${ingredientes.nome}</td>
-                        <td class="text-right"><fmt:formatNumber value="${ingredientes.preco}" minFractionDigits="2" type="currency"/></td>
-                    </tr>
-                </c:forEach>
+                    <c:forEach var="ingredientes" items="${ingredientes}" >
+                        <tr>
+                            <td class="text-left"><input type="checkbox" name="ingrediente" value="${ingredientes.id}"></td>
+                            <td class="text-left">${ingredientes.nome}</td>
+                            <td class="text-right"><fmt:formatNumber value="${ingredientes.preco}" minFractionDigits="2" type="currency"/></td>
+                            <td class="text-right"><input type="text" name="qtd" id="qtd${ingredientes.id}" value="${ingredientes.qtd}" size="2px" maxlength="1"style="text-align: right"/></td>
+                        </tr>
+                    </c:forEach>
 
                 </table>
             </div>
 
             <br>
 
-            <div id="msgResponse">
-                <p class="text-font"></p>
+            <div id="msgResponse" style="text-align: center">
+                <p class="text-font" style="font-size: 10px; font-style: italic"><b></b></p>
             </div>
 
+            <br>
 
-            <input type="button" id="calcular" value="Calcular Pedido"></input>
-            <input type="submit" id="finalizar" value="Finalizar Pedido"></input>
+            <div style="text-align: center">
+                <input type="button" id="calcular" value="Calcular Pedido"></input>&nbsp;
+            </div>
 
             <script>
                 $(document).ready(function(){
+                    $("#qtd1").keypress(verificaNumero);
+                    $("#qtd2").keypress(verificaNumero);
+                    $("#qtd3").keypress(verificaNumero);
+                    $("#qtd4").keypress(verificaNumero);
+                    $("#qtd5").keypress(verificaNumero);
+
                     $('#calcular').click(function(){
 
                         document.getElementById('msgResponse').innerHTML="";
-                        var burger = $('input:radio[name=burger]:checked').val();
-                        var idsIngredientes = new Array();
+                        var idBurger = $('input:radio[name=burger]:checked').val();
+                        idBurger = parseInt(idBurger);
+                        var idAndQtdIngredientes = new Array();;
                         $("input[name='ingrediente']:checked").each(function ()
                         {
-                            idsIngredientes.push(parseInt($(this).val()));
+                            if($("#qtd"+parseInt($(this).val())).val() != ''){
+                                idAndQtdIngredientes.push(parseInt($(this).val()));
+                                idAndQtdIngredientes.push(parseInt($("#qtd"+parseInt($(this).val())).val()));
+                            }
                         });
+
+                        var data;
+                        var url;
+                        if(idAndQtdIngredientes == ''){
+                            data = {idBurger: idBurger};
+                            url = "calculaSomenteBurger"
+                        }else{
+                            data = {idBurger: idBurger, ingredientes: idAndQtdIngredientes};
+                            url = "calcular";
+                        }
 
                         $.ajax(
                             {
                                 type: "POST",
-                                url: "calcular",
-                                dataType: 'json',
-                                data: {burger: JSON.stringify(burger)},
+                                url: url,
+                                data: data,
                                 success: function( response )
                                 {
                                     var div = document.getElementById('msgResponse');
@@ -131,6 +154,13 @@
                         return false;
                     });
                 });
+
+                function verificaNumero(e) {
+                    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                        alert("Digite apenas números de 0 a 9");
+                        return false;
+                    }
+                }
             </script>
 
             <br>

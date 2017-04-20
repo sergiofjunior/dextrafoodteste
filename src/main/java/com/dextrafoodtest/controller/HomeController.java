@@ -12,15 +12,21 @@ import org.springframework.web.servlet.ModelAndView;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
+import java.text.DecimalFormat;
+
+
 
 /**
  * Created by Sérgio on 19/04/2017.
+ * Controller - recebe dados da view Home.jsp e retorna dados para a mesma.
  */
 @Controller
 public class HomeController {
 
     @Autowired
     HomeService homeService;
+
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     @RequestMapping (value = "/")
     public ModelAndView home(){
@@ -35,9 +41,15 @@ public class HomeController {
 
     @ResponseBody
     @RequestMapping(value = "/calcular", method = RequestMethod.POST)
-    public String calcular(@RequestBody String burger) {
-        String result = "Seu lanche custará xxxxx ";
+    public String calcular(@RequestParam(value="idBurger") Integer idBurger, @RequestParam(value="ingredientes[]") Integer[] idEQtdIngredientes) {
+        String result = "<p class=\"text-font\">Seu lanche custa: R$ "  + df.format(homeService.calculaPedido(idBurger, idEQtdIngredientes)) + "</p>";
         return result;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/calculaSomenteBurger", method = RequestMethod.POST)
+    public String calculaSomenteBurger(@RequestParam(value="idBurger") Integer idBurger) {
+        String result = "<p class=\"text-font\">Seu lanche custa: R$ " + df.format(homeService.calculaSomenteBurger(idBurger)) + "</p>";
+        return result;
+    }
 }

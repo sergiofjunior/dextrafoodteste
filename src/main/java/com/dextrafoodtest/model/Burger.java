@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by Sérgio on 19/04/2017.
+ * Bean Burger
  */
 public class Burger {
 

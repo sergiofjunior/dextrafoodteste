@@ -2,6 +2,7 @@ package com.dextrafoodtest.model;
 
 /**
  * Created by Sérgio on 19/04/2017.
+ * Bean Ingrediente
  */
 public class Ingrediente {
 
@@ -11,12 +12,16 @@ public class Ingrediente {
 
     private Double preco;
 
+    private Integer qtd;
+
+    public Ingrediente(){
+    }
+
     public Ingrediente(Integer id, String nomeIngrediente, Double preco){
         this.setId(id);
         this.setNome(nomeIngrediente);
         this.setPreco(preco);
     }
-
 
     public Integer getId() {
         return id;
@@ -42,6 +47,15 @@ public class Ingrediente {
         this.preco = preco;
     }
 
+
+    public Integer getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(Integer qtd) {
+        this.qtd = qtd;
+    }
+
     @Override
     public String toString() {
         return "Ingrediente{" +
@@ -50,4 +64,5 @@ public class Ingrediente {
                 ", preco=" + preco +
                 '}';
     }
+
 }

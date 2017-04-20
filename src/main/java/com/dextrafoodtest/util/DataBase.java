@@ -3,13 +3,16 @@ package com.dextrafoodtest.util;
 import com.dextrafoodtest.model.Burger;
 import com.dextrafoodtest.model.Ingrediente;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Sérgio on 19/04/2017.
+ * Classe utilizada somente para ter os objetos em memória
  */
+@Service
 public class DataBase {
 
     private Burger burger01;
@@ -19,8 +22,6 @@ public class DataBase {
     private Burger burger03;
 
     private Burger burger04;
-
-    private Burger burger05;
 
     private Ingrediente ingrediente01;
 
@@ -117,6 +118,49 @@ public class DataBase {
         return ingredientes;
     }
 
+    public Burger buscaBurger(Integer idBurger){
+        if(idBurger.equals(1)){
+            return burger01;
+        }else if (idBurger.equals(2)){
+            return burger02;
+        }else if (idBurger.equals(3)){
+            return burger03;
+        }else {
+            return burger04;
+        }
+    }
+
+
+    public List<Ingrediente> buscaIngredientes(Integer[] idEQtdIngredientes) {
+        Ingrediente ingrediente;
+        List<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+
+        for(int i=0; i<idEQtdIngredientes.length; i++){
+            if(idEQtdIngredientes[i].equals(1)){
+                ingrediente01.setQtd(idEQtdIngredientes[i+1]);
+                ingredientes.add(ingrediente01);
+            }
+            else if(idEQtdIngredientes[i].equals(2)){
+                ingrediente02.setQtd(idEQtdIngredientes[i+1]);
+                ingredientes.add(ingrediente02);
+            }
+            else if(idEQtdIngredientes[i].equals(3)){
+                ingrediente03.setQtd(idEQtdIngredientes[i+1]);
+                ingredientes.add(ingrediente03);
+            }
+            else if(idEQtdIngredientes[i].equals(4)){
+                ingrediente04.setQtd(idEQtdIngredientes[i+1]);
+                ingredientes.add(ingrediente04);
+            }
+            else if(idEQtdIngredientes[i].equals(5)){
+                ingrediente05.setQtd(idEQtdIngredientes[i+1]);
+                ingredientes.add(ingrediente05);
+            }
+            i = i + 1;
+        }
+        return ingredientes;
+    }
+
 
     public Burger getBurger01() {
         return burger01;
@@ -148,14 +192,6 @@ public class DataBase {
 
     public void setBurger04(Burger burger04) {
         this.burger04 = burger04;
-    }
-
-    public Burger getBurger05() {
-        return burger05;
-    }
-
-    public void setBurger05(Burger burger05) {
-        this.burger05 = burger05;
     }
 
     public Ingrediente getIngrediente01() {
@@ -197,4 +233,5 @@ public class DataBase {
     public void setIngrediente05(Ingrediente ingrediente05) {
         this.ingrediente05 = ingrediente05;
     }
+
 }
