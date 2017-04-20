@@ -9,6 +9,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
  * Created by Sérgio on 19/04/2017.
+ * Configuração do Spring MVC (model view controller), para instanciar páginas jsp
  */
 @Configuration
 @EnableWebMvc

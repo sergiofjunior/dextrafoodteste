@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Created by Sérgio on 19/04/2017.
- * Classe utilizada somente para ter os objetos em memória
+ * Classe utilizada somente para ter uma base de objetos em memória
  */
 @Service
 public class DataBase {

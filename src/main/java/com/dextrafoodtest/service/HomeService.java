@@ -27,22 +27,31 @@ public class HomeService {
         return dataBase.listaIngredientesCardapio();
     }
 
+    /*
+    Calcula valor do pedido final, aplicando todas as promoções.
+     */
     public Double calculaPedido(Integer idBurger, Integer[] idEQtdIngredientes){
         Double valorTotalBurger = 0.0;
         Burger burger = dataBase.buscaBurger(idBurger);
         List<Ingrediente> ingredientes = dataBase.buscaIngredientes(idEQtdIngredientes);
         valorTotalBurger = calculaValorSemDesconto(burger, ingredientes);
-        valorTotalBurger = descontoPromocaoLight(burger, ingredientes, valorTotalBurger);
         valorTotalBurger = valorTotalBurger - descontoPorcoesCarne(ingredientes);
+        valorTotalBurger = descontoPromocaoLight(burger, ingredientes, valorTotalBurger);
         valorTotalBurger = valorTotalBurger - descontoPorcoesQueijo(ingredientes);
         return valorTotalBurger;
     }
 
+    /*
+    Calcula somente o valor padrão do hamburguer, com os ingredientes default.
+     */
     public Double calculaSomenteBurger(Integer idBurger){
         Burger burger = dataBase.buscaBurger(idBurger);
         return burger.getPreco();
     }
 
+    /*
+    Calcula Valor total do Lanche, sem nenhum desconto e com todos ingredientes
+     */
     private Double calculaValorSemDesconto(Burger burger, List<Ingrediente> ingredientes){
         Double valorIngredientes = 0.0;
         for(Ingrediente ingrediente: ingredientes){
@@ -51,15 +60,21 @@ public class HomeService {
         return valorIngredientes + burger.getPreco();
     }
 
+    /*
+    Valida se Contain o Ingrediente 01 e se não Contem o Ingrediente 02
+     */
     private Double descontoPromocaoLight(Burger burger, List<Ingrediente> ingredientes, Double valorTotalBurger){
-        if(ingredientes.contains(dataBase.getIngrediente01())
-                && (!burger.getIngredientes().contains(dataBase.getIngrediente02())
-                && !ingredientes.contains(dataBase.getIngrediente02()))){
-            valorTotalBurger = valorTotalBurger * 0.9;
+        if(ingredientes.contains(dataBase.getIngrediente01())) {
+            if(!(burger.getIngredientes().contains(dataBase.getIngrediente02()) || burger.getIngredientes().contains(dataBase.getIngrediente02()))){
+                valorTotalBurger = valorTotalBurger * 0.9;
+            }
         }
-        return valorTotalBurger;
+        return  valorTotalBurger;
     }
 
+    /*
+    Aplica os descontos da Promoção de Porções de Carne conforme quantidade
+     */
     private Double descontoPorcoesCarne(List<Ingrediente> ingredientes){
         int qtdPorcoesCarne = 1;
         Double valordesconto = 0.0;
@@ -80,6 +95,9 @@ public class HomeService {
         return valordesconto;
     }
 
+    /*
+    Aplica os descontos da Promoção de Porções de Queijo conforme quantidade
+     */
     private Double descontoPorcoesQueijo(List<Ingrediente> ingredientes){
         int qtdPorcoesQueijo = 1;
         Double valordesconto = 0.0;
