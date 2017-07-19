@@ -28,6 +28,13 @@ public class HomeController {
 
     private DecimalFormat df = new DecimalFormat("0.00");
 
+    @ResponseBody
+    @RequestMapping(value = "/calcular", method = RequestMethod.POST)
+    public String calcular(@RequestParam(value="idBurger") Integer idBurger, @RequestParam(value="ingredientes[]") Integer[] idEQtdIngredientes) {
+        String result = "<p class=\"text-font\">Seu lanche custa: R$ "  + df.format(homeService.calculaPedido(idBurger, idEQtdIngredientes)) + "</p>";
+        return result;
+    }
+
     @RequestMapping (value = "/")
     public ModelAndView home(){
         ModelAndView mav = new ModelAndView();
@@ -37,13 +44,6 @@ public class HomeController {
         mav.addObject("burgers", burgers);
         mav.addObject("ingredientes", ingredientes);
         return mav;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/calcular", method = RequestMethod.POST)
-    public String calcular(@RequestParam(value="idBurger") Integer idBurger, @RequestParam(value="ingredientes[]") Integer[] idEQtdIngredientes) {
-        String result = "<p class=\"text-font\">Seu lanche custa: R$ "  + df.format(homeService.calculaPedido(idBurger, idEQtdIngredientes)) + "</p>";
-        return result;
     }
 
     @ResponseBody
