@@ -35,6 +35,13 @@ public class HomeController {
         return result;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/calculaSomenteBurger", method = RequestMethod.POST)
+    public String calculaSomenteBurger(@RequestParam(value="idBurger") Integer idBurger) {
+        String result = "<p class=\"text-font\">Seu lanche custa: R$ " + df.format(homeService.calculaSomenteBurger(idBurger)) + "</p>";
+        return result;
+    }
+
     @RequestMapping (value = "/")
     public ModelAndView home(){
         ModelAndView mav = new ModelAndView();
@@ -46,10 +53,4 @@ public class HomeController {
         return mav;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/calculaSomenteBurger", method = RequestMethod.POST)
-    public String calculaSomenteBurger(@RequestParam(value="idBurger") Integer idBurger) {
-        String result = "<p class=\"text-font\">Seu lanche custa: R$ " + df.format(homeService.calculaSomenteBurger(idBurger)) + "</p>";
-        return result;
-    }
 }
